@@ -1,4 +1,4 @@
-package de.hshl.isd.quiz.ui.main
+package de.hshl.isd.quiz
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -37,8 +37,10 @@ class MainViewModel : ViewModel() {
     fun evaluateAnswer(answer: Boolean) {
         if (answer == questions[_index.value!!].second) {
             _answer.value = "Richtig!"
+            StatisticsSingleton.correctAnswers++
         } else {
             _answer.value = "Falsch!"
+            StatisticsSingleton.wrongAnswers++
         }
     }
 

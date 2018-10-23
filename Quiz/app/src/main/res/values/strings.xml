@@ -3,4 +3,8 @@
     <string name="button_answer_false">Falsch</string>
     <string name="button_answer_true">Richtig</string>
     <string name="button_answer_skip">Überspringen</string>
+    <string name="label.statistics.sum">Bearbeitete Fragen</string>
+    <string name="label.statistics.correct">Richtig beantwortet</string>
+    <string name="label.statistics.wrong">Falsch beantwortet</string>
+    <string name="label.statistics.skipped">Übersprungen</string>
 </resources>

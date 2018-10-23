@@ -2,7 +2,7 @@ package de.hshl.isd.quiz
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import de.hshl.isd.quiz.ui.main.MainFragment
+import android.view.MenuItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,6 +14,19 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        when (id) {
+            R.id.action_statistics -> supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, StatisticsFragment.newInstance())
+                    .commitNow()
+        }
+
+
+        return super.onOptionsItemSelected(item)
     }
 
 }

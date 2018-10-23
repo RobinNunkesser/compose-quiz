@@ -1,17 +1,12 @@
-package de.hshl.isd.quiz.ui.main
+package de.hshl.isd.quiz
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
-import android.view.animation.AnimationSet
-import android.view.animation.Interpolator
-import de.hshl.isd.quiz.R
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
@@ -21,6 +16,11 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -45,7 +45,13 @@ class MainFragment : Fragment() {
 
         skipButton.setOnClickListener {
             viewModel.increaseIndex()
+            StatisticsSingleton.skippedQuestions++
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.main, menu)
     }
 
     fun showAnswer() {
