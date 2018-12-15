@@ -29,7 +29,9 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(MainViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
         viewModel.question.observe(this, Observer {questionTextView.text = it})
         viewModel.answer.observe(this, Observer {answerTextView.text = it})
 
@@ -45,7 +47,7 @@ class MainFragment : Fragment() {
 
         skipButton.setOnClickListener {
             viewModel.increaseIndex()
-            StatisticsSingleton.skippedQuestions++
+            viewModel.skippedQuestions++
         }
     }
 

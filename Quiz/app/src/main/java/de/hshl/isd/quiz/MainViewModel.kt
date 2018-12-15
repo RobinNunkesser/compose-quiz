@@ -13,6 +13,12 @@ class MainViewModel : ViewModel() {
     Pair("Liechtenstein hat keinen eigenen Flughafen.", true),
     Pair("Die meisten Subarus werden in China hergestellt.", false))
 
+    var correctAnswers = 0
+    var wrongAnswers = 0
+    var skippedQuestions = 0
+    val answeredQuestions : Int
+        get() = correctAnswers + wrongAnswers + skippedQuestions
+
     private val _index = MutableLiveData<Int>()
     val index : LiveData<Int>
     get() = _index
@@ -37,10 +43,10 @@ class MainViewModel : ViewModel() {
     fun evaluateAnswer(answer: Boolean) {
         if (answer == questions[_index.value!!].second) {
             _answer.value = "Richtig!"
-            StatisticsSingleton.correctAnswers++
+            correctAnswers++
         } else {
             _answer.value = "Falsch!"
-            StatisticsSingleton.wrongAnswers++
+            wrongAnswers++
         }
     }
 
