@@ -11,10 +11,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,14 +35,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/label.statistics.sum"
-                android:textAppearance="@android:style/TextAppearance.Material.Body1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <TextView
                 android:id="@+id/questionsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
         </LinearLayout>
 
@@ -49,13 +57,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/label.statistics.correct"
-                android:textAppearance="@android:style/TextAppearance.Material.Body1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <TextView
                 android:id="@+id/correctQuestionsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""/>
+                android:text=""
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
         </LinearLayout>
 
         <LinearLayout
@@ -69,13 +78,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/label.statistics.wrong"
-                android:textAppearance="@android:style/TextAppearance.Material.Body1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <TextView
                 android:id="@+id/wrongQuestionsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""/>
+                android:text=""
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
         </LinearLayout>
 
         <LinearLayout
@@ -88,14 +98,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/label.statistics.skipped"
-                android:textAppearance="@android:style/TextAppearance.Material.Body1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <TextView
                 android:id="@+id/skippedQuestionsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
         </LinearLayout>
     </LinearLayout>
 
