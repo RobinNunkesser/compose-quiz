@@ -16,7 +16,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="MainFragment"
+        android:text=""
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@id/answerTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,6 +43,7 @@
         android:layout_gravity="start"
         android:layout_marginEnd="8dp"
         android:text="@string/button_answer_false"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintBottom_toTopOf="@id/skipButton"
         app:layout_constraintEnd_toStartOf="@+id/trueButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,12 +54,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginEnd="8dp"
         android:text="@string/button_answer_true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/falseButton"
         app:layout_constraintTop_toTopOf="@id/falseButton"
-        tools:layout_editor_absoluteY="255dp"/>
+        />
 
     <Button
         android:id="@+id/skipButton"
