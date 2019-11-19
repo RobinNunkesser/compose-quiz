@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
@@ -63,14 +64,24 @@ class MainFragment : Fragment() {
         val animationIn = AlphaAnimation(0.0f,1.0f)
         animationIn.duration = 2000
         animationIn.interpolator = AccelerateDecelerateInterpolator()
+        animationIn.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(p0: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                viewModel.increaseIndex()
+                trueButton.isEnabled = true
+                falseButton.isEnabled = true
+                skipButton.isEnabled = true
+            }
+
+            override fun onAnimationStart(p0: Animation?) {
+
+            }
+        })
         answerTextView.startAnimation(animationIn)
 
-        answerTextView.postDelayed(Runnable {
-            viewModel.increaseIndex()
-            trueButton.isEnabled = true
-            falseButton.isEnabled = true
-            skipButton.isEnabled = true
-        },2500)
 
     }
 

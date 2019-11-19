@@ -26,7 +26,8 @@ class MainViewModel : ViewModel() {
         _index.value = 0
     }
 
-    val question : LiveData<String> = Transformations.map(index) { index -> questions[index].first}
+    val question: LiveData<String> =
+            Transformations.map(index) { index -> questions[index].first }
 
     private val _answer = MutableLiveData<String>()
     val answer : LiveData<String>
