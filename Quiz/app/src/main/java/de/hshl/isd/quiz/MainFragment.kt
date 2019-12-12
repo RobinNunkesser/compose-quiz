@@ -31,7 +31,7 @@ class MainFragment : Fragment() {
 
         viewModel.question.observe(this, Observer {questionTextView.text = it})
         viewModel.answer.observe(this, Observer {
-            it?.let { answerTextView.setText(it) } ?: (answerTextView.text = "")
+            it?.let { answerTextView.setText(it) } ?: answerTextView.setText("")
         })
 
         trueButton.setOnClickListener {
