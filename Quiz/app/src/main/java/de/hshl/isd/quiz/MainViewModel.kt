@@ -29,24 +29,21 @@ class MainViewModel : ViewModel() {
     val question: LiveData<String> =
             Transformations.map(index) { index -> questions[index].first }
 
-    private val _answer = MutableLiveData<String>()
-    val answer : LiveData<String>
+    private val _answer = MutableLiveData<Int?>()
+    val answer: LiveData<Int?>
     get() = _answer
-    init {
-        _answer.value = ""
-    }
 
     fun increaseIndex() {
         _index.value = (_index.value!! + 1) % questions.count()
-        _answer.value = ""
+        _answer.value = null
     }
 
     fun evaluateAnswer(answer: Boolean) {
         if (answer == questions[_index.value!!].second) {
-            _answer.value = "Richtig!"
+            _answer.value = R.string.label_correct
             correctAnswers++
         } else {
-            _answer.value = "Falsch!"
+            _answer.value = R.string.label_wrong
             wrongAnswers++
         }
     }

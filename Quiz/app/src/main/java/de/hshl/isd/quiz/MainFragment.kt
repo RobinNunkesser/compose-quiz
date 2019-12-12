@@ -12,10 +12,6 @@ import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +26,13 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(MainViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        viewModel =
+                ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+
         viewModel.question.observe(this, Observer {questionTextView.text = it})
-        viewModel.answer.observe(this, Observer {answerTextView.text = it})
+        viewModel.answer.observe(this, Observer {
+            it?.let { answerTextView.setText(it) } ?: (answerTextView.text = "")
+        })
 
         trueButton.setOnClickListener {
             viewModel.evaluateAnswer(true)
