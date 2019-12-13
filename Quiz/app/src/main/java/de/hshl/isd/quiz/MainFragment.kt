@@ -55,32 +55,37 @@ class MainFragment : Fragment() {
         inflater?.inflate(R.menu.main, menu)
     }
 
-    fun showAnswer() {
+    private fun showAnswer() {
         trueButton.isEnabled = false
         falseButton.isEnabled = false
         skipButton.isEnabled = false
-        val animationIn = AlphaAnimation(0.0f,1.0f)
-        animationIn.duration = 2000
-        animationIn.interpolator = AccelerateDecelerateInterpolator()
-        animationIn.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(p0: Animation?) {
 
+        val animationIn = AlphaAnimation(0.0f, 1.0f).apply {
+            duration = 2000
+            interpolator = AccelerateDecelerateInterpolator()
+            setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(p0: Animation?) {
+                    // Nothing to do
+                }
+
+                override fun onAnimationEnd(p0: Animation?) {
+                    viewModel.increaseIndex()
+                    trueButton.isEnabled = true
+                    falseButton.isEnabled = true
+                    skipButton.isEnabled = true
+                }
+
+                override fun onAnimationStart(p0: Animation?) {
+                    // Nothing to do
+                }
             }
 
-            override fun onAnimationEnd(p0: Animation?) {
-                viewModel.increaseIndex()
-                trueButton.isEnabled = true
-                falseButton.isEnabled = true
-                skipButton.isEnabled = true
-            }
-
-            override fun onAnimationStart(p0: Animation?) {
-
-            }
-        })
+            )
+        }
         answerTextView.startAnimation(animationIn)
 
 
     }
+
 
 }
