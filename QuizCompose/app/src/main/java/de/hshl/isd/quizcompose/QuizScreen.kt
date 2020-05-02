@@ -3,6 +3,7 @@ package de.hshl.isd.quizcompose
 import androidx.compose.Composable
 import androidx.ui.foundation.Text
 import androidx.ui.layout.Column
+import androidx.ui.layout.Row
 import androidx.ui.material.Button
 import androidx.ui.material.Scaffold
 import androidx.ui.material.TopAppBar
@@ -25,11 +26,24 @@ fun QuizScreen(viewModel: MainViewModel) {
         bodyContent = {
             Column {
                 Text(viewModel.question)
+                Text(viewModel.answer)
+                Row {
+                    Button(onClick = {
+                        viewModel.evaluateAnswer(false)
+                    }) {
+                        Text("Falsch")
+                    }
+                    Button(onClick = {
+                        viewModel.evaluateAnswer(true)
+                    }) {
+                        Text("Richtig")
+                    }
+                }
                 Button(onClick = {
                     viewModel.increaseIndex()
                     viewModel.skippedQuestions++
                 }) {
-                    Text("R.string.button_answer_skip")
+                    Text("Überspringen")
                 }
             }
 

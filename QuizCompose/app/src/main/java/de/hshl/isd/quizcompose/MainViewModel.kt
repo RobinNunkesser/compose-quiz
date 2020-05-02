@@ -24,19 +24,19 @@ class MainViewModel {
     val question: String
         get() = questions[index].first
 
-    var answer: Int? = null
+    var answer: String = ""
 
     fun increaseIndex() {
         index = (index + 1) % questions.count()
-        answer = null
+        answer = ""
     }
 
     fun evaluateAnswer(givenAnswer: Boolean) {
         if (givenAnswer == questions[index].second) {
-            answer = R.string.label_correct
+            answer = "Richtig!"
             correctAnswers++
         } else {
-            answer = R.string.label_wrong
+            answer = "Falsch!"
             wrongAnswers++
         }
     }

@@ -3,6 +3,8 @@ package de.hshl.isd.quizcompose
 import androidx.compose.Composable
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
+import androidx.ui.layout.Column
+import androidx.ui.layout.Row
 import androidx.ui.material.IconButton
 import androidx.ui.material.Scaffold
 import androidx.ui.material.TopAppBar
@@ -24,7 +26,24 @@ fun StatisticsScreen(viewModel: MainViewModel) {
             )
         },
         bodyContent = {
-            Text("Statistics")
+            Column {
+                Row {
+                    Text("Bearbeitete Fragen")
+                    Text(viewModel.answeredQuestions.toString())
+                }
+                Row {
+                    Text("Richtig beantwortet")
+                    Text(viewModel.correctAnswers.toString())
+                }
+                Row {
+                    Text("Falsch beantwortet")
+                    Text(viewModel.wrongAnswers.toString())
+                }
+                Row {
+                    Text("Übersprungen")
+                    Text(viewModel.skippedQuestions.toString())
+                }
+            }
         }
     )
 }
