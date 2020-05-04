@@ -34,14 +34,11 @@ fun QuizScreen(viewModel: MainViewModel) {
         },
         bodyContent = {
             Stack(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-                Box(Modifier.gravity(Alignment.TopCenter)) {
                     Text(
                         viewModel.question,
-                        modifier = Modifier.padding(0.dp, 32.dp, 0.dp, 32.dp),
+                        modifier = Modifier.padding(top = 32.dp),
                         style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     )
-
-                }
                 Column(
                     Modifier.gravity(Alignment.BottomCenter),
                     horizontalGravity = Alignment.CenterHorizontally
@@ -71,7 +68,7 @@ fun QuizScreen(viewModel: MainViewModel) {
                             Text("Richtig")
                         }
                     }
-                    Button(modifier = Modifier.padding(8.dp),
+                    Button(modifier = Modifier.padding(top = 8.dp),
                         enabled = !viewModel.showAnswer,
                         onClick = {
                             viewModel.increaseIndex()
@@ -83,12 +80,4 @@ fun QuizScreen(viewModel: MainViewModel) {
             }
         }
     )
-}
-
-@Composable
-fun VisibilityTransition(visibility: Boolean) {
-    Box(Modifier.fillMaxWidth(), gravity = ContentGravity.Center) {
-        val opacity = animate(if (visibility) 1f else 0f)
-        Text("Visibility Transition", modifier = Modifier.drawOpacity(opacity))
-    }
 }
