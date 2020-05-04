@@ -21,6 +21,8 @@ class MainViewModel {
 
     var index = 0
 
+    var showAnswer = false
+
     val question: String
         get() = questions[index].first
 
