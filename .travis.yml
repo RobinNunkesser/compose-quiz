@@ -6,6 +6,7 @@ env:
   global:
     - ABI=x86_64
     - SDK=${HOME}/android-sdk
+    - ANDROID_SDK_ROOT=${SDK}
     - SDK_TOOLS="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip""
     - EMU=default 
     - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
