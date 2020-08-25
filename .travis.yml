@@ -5,14 +5,14 @@ dist: bionic
 env:
   global:
     - ABI=x86_64
-    - ANDROID_HOME=${HOME}/android-sdk
-    - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip""
-    - EMU_FLAVOR=default 
+    - SDK=${HOME}/android-sdk
+    - SDK_TOOLS="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip""
+    - EMU=default 
     - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
     - GRAVIS="$HOME/gravis"
     - JDK="1.8"
-    - TOOLS=${ANDROID_HOME}/tools
-    - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
+    - TOOLS=${SDK}/tools
+    - PATH=${SDK}:${SDK}/emulator:${TOOLS}:${TOOLS}/bin:${SDK}/platform-tools:${PATH}
   matrix:
     - PROJECT="QuizCompose" API=29 
 
@@ -24,8 +24,8 @@ before_install:
   - source $GRAVIS/install-jdk
 
   # Set up Android SDK 
-  - travis_retry wget -q "${ANDROID_TOOLS_URL}" -O android-sdk-tools.zip
-  - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
+  - travis_retry wget -q "${SDK_TOOLS}" -O android-sdk-tools.zip
+  - unzip -q android-sdk-tools.zip -d ${SDK}
   - rm android-sdk-tools.zip
   - mkdir ~/.android
   - echo 'count=0' > ~/.android/repositories.cfg 
@@ -39,19 +39,21 @@ install:
   # Download required emulator tools
   - echo y | travis_retry sdkmanager --no_https "platforms;android-$API" >/dev/null
   - echo y | travis_retry sdkmanager --no_https "emulator" >/dev/null
-  - echo y | travis_retry sdkmanager --no_https "system-images;android-$API;$EMU_FLAVOR;$ABI" >/dev/null # install our emulator
+  - echo y | travis_retry sdkmanager --no_https "system-images;android-$API;$EMU;$ABI" >/dev/null # install our emulator
 
   # Set up KVM on linux for hardware acceleration. 
-  - travis_retry sudo -E apt-get -yq --no-install-suggests --no-install-recommends install bridge-utils libpulse0 libvirt-bin qemu-kvm virtinst ubuntu-vm-builder
+  - travis_retry sudo -E apt-get -yq --no-install-suggests 
+    --no-install-recommends install bridge-utils libpulse0 libvirt-bin 
+    qemu-kvm virtinst ubuntu-vm-builder
   - sudo adduser $USER libvirt
   - sudo adduser $USER kvm
 
   # Create an Android emulator
-  - echo no | avdmanager create avd --force -n test -k "system-images;android-$API;$EMU_FLAVOR;$ABI" -c 10M
-  - |
-    EMU_PARAMS="-verbose -no-snapshot -no-window -camera-back none -camera-front none -selinux permissive -qemu -m 2048"
-    EMU_COMMAND="emulator"
-    sudo -E sudo -u $USER -E bash -c "${ANDROID_HOME}/emulator/${EMU_COMMAND} -avd test ${AUDIO} ${EMU_PARAMS} &"
+  - echo no | 
+    avdmanager create avd --force -n test -k "system-images;android-$API;$EMU;$ABI" -c 10M
+  - sudo -E sudo -u $USER -E bash -c "${SDK}/emulator/emulator -avd test 
+    -verbose -no-snapshot -no-window -camera-back none -camera-front none 
+    -selinux permissive -qemu -m 2048 &"
 
   # Wait for emulator to be ready
   - ./tools/android-wait-for-emulator.sh
