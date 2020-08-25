@@ -51,9 +51,6 @@ install:
   - |
     EMU_PARAMS="-verbose -no-snapshot -no-window -camera-back none -camera-front none -selinux permissive -qemu -m 2048"
     EMU_COMMAND="emulator"
-    # This double "sudo" monstrosity is used to have Travis execute the
-    # emulator with its new group permissions and help preserve the rule
-    # of least privilege.
     sudo -E sudo -u $USER -E bash -c "${ANDROID_HOME}/emulator/${EMU_COMMAND} -avd test ${AUDIO} ${EMU_PARAMS} &"
 
   # Wait for emulator to be ready
