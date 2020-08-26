@@ -7,7 +7,7 @@ env:
     - ABI=x86_64
     - SDK=${HOME}/android-sdk
     - ANDROID_SDK_ROOT=${SDK}
-    - SDK_TOOLS="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip""
+    - SDK_TOOLS="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
     - EMU=default 
     - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
     - GRAVIS="$HOME/gravis"
@@ -40,7 +40,8 @@ install:
   # Download required emulator tools
   - echo y | travis_retry sdkmanager --no_https "platforms;android-$API" >/dev/null
   - echo y | travis_retry sdkmanager --no_https "emulator" >/dev/null
-  - echo y | travis_retry sdkmanager --no_https "system-images;android-$API;$EMU;$ABI" >/dev/null # install our emulator
+  - echo y | travis_retry 
+    sdkmanager --no_https "system-images;android-$API;$EMU;$ABI" >/dev/null 
 
   # Set up KVM on linux for hardware acceleration. 
   - travis_retry sudo -E apt-get -yq --no-install-suggests 
@@ -50,8 +51,8 @@ install:
   - sudo adduser $USER kvm
 
   # Create an Android emulator
-  - echo no | 
-    avdmanager create avd --force -n test -k "system-images;android-$API;$EMU;$ABI" -c 10M
+  - echo no | avdmanager create avd --force -n test 
+    -k "system-images;android-$API;$EMU;$ABI" -c 10M
   - sudo -E sudo -u $USER -E bash -c "${SDK}/emulator/emulator -avd test 
     -verbose -no-snapshot -no-window -camera-back none -camera-front none 
     -selinux permissive -qemu -m 2048 &"
