@@ -1,0 +1,72 @@
+sudo: true
+language: bash
+dist: bionic
+
+env:
+  global:
+    - ABI=x86_64
+    - SDK=${HOME}/android-sdk
+    - ANDROID_SDK_ROOT=${SDK}
+    - SDK_TOOLS="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
+    - EMU=default 
+    - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
+    - GRAVIS="$HOME/gravis"
+    - JDK="1.8"
+    - TOOLS=${SDK}/tools
+    - PATH=${SDK}:${SDK}/emulator:${TOOLS}:${TOOLS}/bin:${SDK}/platform-tools:${PATH}
+  matrix:
+    - PROJECT="QuizCompose" API=29 
+
+before_install:
+  # Set up JDK 8 for Android SDK 
+  - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
+  - export TARGET_JDK="${JDK}"
+  - JDK="adopt@1.8"
+  - source $GRAVIS/install-jdk
+
+  # Set up Android SDK 
+  - travis_retry wget -q "${SDK_TOOLS}" -O android-sdk-tools.zip
+  - unzip -q android-sdk-tools.zip -d ${SDK}
+  - rm android-sdk-tools.zip
+  - mkdir ~/.android
+  - echo 'count=0' > ~/.android/repositories.cfg 
+  - yes | travis_retry sdkmanager --licenses >/dev/null
+  - echo y | travis_retry sdkmanager --no_https "platform-tools" >/dev/null
+  - echo y | travis_retry sdkmanager --no_https "tools" >/dev/null
+  - echo y | travis_retry sdkmanager --no_https "build-tools;28.0.3" >/dev/null
+  - echo y | travis_retry sdkmanager --no_https "platforms;android-28" >/dev/null
+
+install:
+  # Download required emulator tools
+  - echo y | travis_retry sdkmanager --no_https "platforms;android-$API" >/dev/null
+  - echo y | travis_retry sdkmanager --no_https "emulator" >/dev/null
+  - echo y | travis_retry 
+    sdkmanager --no_https "system-images;android-$API;$EMU;$ABI" >/dev/null 
+
+  # Set up KVM on linux for hardware acceleration. 
+  - travis_retry sudo -E apt-get -yq --no-install-suggests 
+    --no-install-recommends install bridge-utils libpulse0 libvirt-bin 
+    qemu-kvm virtinst ubuntu-vm-builder
+  - sudo adduser $USER libvirt
+  - sudo adduser $USER kvm
+
+  # Create an Android emulator
+  - echo no | avdmanager create avd --force -n test 
+    -k "system-images;android-$API;$EMU;$ABI" -c 10M
+  - sudo -E sudo -u $USER -E bash -c "${SDK}/emulator/emulator -avd test 
+    -verbose -no-snapshot -no-window -camera-back none -camera-front none 
+    -selinux permissive -qemu -m 2048 &"
+
+  # Wait for emulator to be ready
+  - ./tools/android-wait-for-emulator.sh
+  - adb shell input keyevent 82 &
+
+  # Switch back to our target JDK version to build and run tests
+  - JDK="adopt@${TARGET_JDK}"
+  - source $GRAVIS/install-jdk
+
+script:
+  - cd $PROJECT
+  - ./gradlew build connectedCheck
+  - cd ..
+
