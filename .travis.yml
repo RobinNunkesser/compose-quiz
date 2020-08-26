@@ -15,5 +15,5 @@ env:
 
 script:
     - cd $PROJECT
-    - ./gradlew build connectedCheck
+    - ./gradlew build test
     - cd ..
