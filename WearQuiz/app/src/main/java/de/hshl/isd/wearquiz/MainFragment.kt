@@ -11,11 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), NavigationDrawerFragment {
 
     companion object {
         fun newInstance() = MainFragment()
     }
+
+    override val navDrawerText: CharSequence
+        get() = "Quiz"
+    override val navDrawerDrawable: Int
+        get() = R.drawable.ic_baseline_quickreply_24
 
     private lateinit var viewModel: MainViewModel
 

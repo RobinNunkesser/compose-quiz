@@ -2,7 +2,7 @@ package de.hshl.isd.wearquiz
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.wear.ambient.AmbientModeSupport
 import androidx.wear.widget.drawer.WearableNavigationDrawerView
@@ -14,6 +14,10 @@ class MainActivity : FragmentActivity(),
     private lateinit var ambientController: AmbientModeSupport.AmbientController
     private lateinit var wearableNavigationDrawer: WearableNavigationDrawerView
 
+    val fragments = listOf<NavigationDrawerFragment>(
+        MainFragment.newInstance(), StatisticsFragment.newInstance()
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,15 +27,11 @@ class MainActivity : FragmentActivity(),
         wearableNavigationDrawer = findViewById(R.id.top_navigation_drawer)
         wearableNavigationDrawer.setAdapter(object :
             WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
-            val fragments = listOf(
-                Pair("Text", R.drawable.ic_baseline_thumb_down_24),
-                Pair("Text", R.drawable.ic_baseline_thumb_down_24)
-            )
 
-            override fun getItemText(pos: Int): CharSequence = fragments[pos].first
+            override fun getItemText(pos: Int): CharSequence = fragments[pos].navDrawerText
 
             override fun getItemDrawable(pos: Int): Drawable = resources.getDrawable(
-                fragments[pos].second,
+                fragments[pos].navDrawerDrawable,
                 theme
             )
 
@@ -43,7 +43,7 @@ class MainActivity : FragmentActivity(),
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, fragments[0] as Fragment)
                 .commitNow()
         }
     }
@@ -52,7 +52,9 @@ class MainActivity : FragmentActivity(),
         object : AmbientModeSupport.AmbientCallback() {}
 
     override fun onItemSelected(pos: Int) {
-        Log.d("MainActivity", pos.toString())
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, this.fragments[pos] as Fragment)
+            .commitNow()
     }
 
 }
