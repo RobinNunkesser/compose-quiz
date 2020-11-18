@@ -5,4 +5,13 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="button_answer_false">Falsch</string>
+    <string name="button_answer_true">Richtig</string>
+    <string name="button_answer_skip">Überspringen</string>
+    <string name="label_statistics_sum">Bearbeitete Fragen</string>
+    <string name="label_statistics_correct">Richtig beantwortet</string>
+    <string name="label_statistics_wrong">Falsch beantwortet</string>
+    <string name="label_statistics_skipped">Übersprungen</string>
+    <string name="label_correct">Richtig!</string>
+    <string name="label_wrong">Falsch!</string>
 </resources>
