@@ -27,7 +27,8 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel =
-                ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+                ViewModelProviders.of(requireActivity())
+                        .get(MainViewModel::class.java)
 
         viewModel.question.observe(this, Observer {questionTextView.text = it})
         viewModel.answer.observe(this, Observer {

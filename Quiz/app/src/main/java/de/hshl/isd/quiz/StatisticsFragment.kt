@@ -25,7 +25,8 @@ class StatisticsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel =
-                ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+                ViewModelProviders.of(requireActivity())
+                        .get(MainViewModel::class.java)
 
         questionsTextView.text = viewModel.answeredQuestions.toString()
         correctQuestionsTextView.text = viewModel.correctAnswers.toString()
