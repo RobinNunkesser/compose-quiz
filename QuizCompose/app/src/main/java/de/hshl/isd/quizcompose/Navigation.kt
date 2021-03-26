@@ -14,36 +14,29 @@
  * limitations under the License.
  */
 
-package com.example.jetnews.ui
+package de.hshl.isd.quizcompose
 
 import android.os.Bundle
 import androidx.annotation.MainThread
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.os.bundleOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.jetnews.ui.Screen.Article
-import com.example.jetnews.ui.Screen.Home
-import com.example.jetnews.ui.Screen.Interests
-import com.example.jetnews.ui.ScreenName.ARTICLE
-import com.example.jetnews.ui.ScreenName.HOME
-import com.example.jetnews.ui.ScreenName.INTERESTS
-import com.example.jetnews.utils.getMutableStateOf
 
 /**
  * Screen names (used for serialization)
  */
-enum class ScreenName { HOME, INTERESTS, ARTICLE }
+enum class ScreenName { QUIZ, STATISTICS }
 
-/**
- * Class defining the screens we have in the app: home, article details and interests
- */
+
 sealed class Screen(val id: ScreenName) {
-    object Home : Screen(HOME)
-    object Interests : Screen(INTERESTS)
-    data class Article(val postId: String) : Screen(ARTICLE)
+    data class Quiz(val viewModel: MainViewModel) : Screen(ScreenName.QUIZ)
+    data class Statistics(val viewModel: MainViewModel) : Screen(ScreenName.STATISTICS)
 }
+
 
 /**
  * Helpers for saving and loading a [Screen] object to a [Bundle].
@@ -53,18 +46,12 @@ sealed class Screen(val id: ScreenName) {
  */
 private const val SIS_SCREEN = "sis_screen"
 private const val SIS_NAME = "screen_name"
-private const val SIS_POST = "post"
 
 /**
  * Convert a screen to a bundle that can be stored in [SavedStateHandle]
  */
 private fun Screen.toBundle(): Bundle {
-    return bundleOf(SIS_NAME to id.name).also {
-        // add extra keys for various types here
-        if (this is Article) {
-            it.putString(SIS_POST, postId)
-        }
-    }
+    return bundleOf(SIS_NAME to id.name)
 }
 
 /**
@@ -76,12 +63,8 @@ private fun Screen.toBundle(): Bundle {
 private fun Bundle.toScreen(): Screen {
     val screenName = ScreenName.valueOf(getStringOrThrow(SIS_NAME))
     return when (screenName) {
-        HOME -> Home
-        INTERESTS -> Interests
-        ARTICLE -> {
-            val postId = getStringOrThrow(SIS_POST)
-            Article(postId)
-        }
+        ScreenName.QUIZ -> Screen.Quiz()
+        ScreenName.STATISTICS -> Screen.Statistics()
     }
 }
 
@@ -92,6 +75,30 @@ private fun Bundle.toScreen(): Screen {
  */
 private fun Bundle.getStringOrThrow(key: String) =
     requireNotNull(getString(key)) { "Missing key '$key' in $this" }
+
+/**
+ * Return a [MutableState] that will automatically be saved in a [SavedStateHandle].
+ *
+ * This can be used from ViewModels to create a compose-observable value that survives rotation. It
+ * supports arbitrary types with manual conversion to a [Bundle].
+ *
+ * @param save convert [T] to a [Bundle] for saving
+ * @param restore restore a [T] from a [Bundle]
+ */
+fun <T> SavedStateHandle.getMutableStateOf(
+    key: String,
+    default: T,
+    save: (T) -> Bundle,
+    restore: (Bundle) -> T
+): MutableState<T> {
+    val bundle: Bundle? = get(key)
+    val initial = if (bundle == null) { default } else { restore(bundle) }
+    val state = mutableStateOf(initial)
+    setSavedStateProvider(key) {
+        save(state.value)
+    }
+    return state
+}
 
 /**
  * This is expected to be replaced by the navigation component, but for now handle navigation
@@ -114,7 +121,7 @@ class NavigationViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
      */
     var currentScreen: Screen by savedStateHandle.getMutableStateOf<Screen>(
         key = SIS_SCREEN,
-        default = Home,
+        default = Screen.Quiz(),
         save = { it.toBundle() },
         restore = { it.toScreen() }
     )
@@ -128,8 +135,8 @@ class NavigationViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
      */
     @MainThread
     fun onBack(): Boolean {
-        val wasHandled = currentScreen != Home
-        currentScreen = Home
+        val wasHandled = currentScreen != Screen.Quiz
+        currentScreen = Screen.Quiz
         return wasHandled
     }
 

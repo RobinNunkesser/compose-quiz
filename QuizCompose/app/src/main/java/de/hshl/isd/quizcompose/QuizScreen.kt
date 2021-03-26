@@ -1,26 +1,25 @@
 package de.hshl.isd.quizcompose
 
-import androidx.compose.Composable
-import androidx.ui.animation.animate
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.core.drawOpacity
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.ContentGravity
-import androidx.ui.foundation.Text
-import androidx.ui.layout.*
-import androidx.ui.material.Button
-import androidx.ui.material.Scaffold
-import androidx.ui.material.TopAppBar
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
-import androidx.ui.unit.dp
-import androidx.ui.unit.sp
+import androidx.compose.animation.animate
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawOpacity
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun QuizScreen(viewModel: MainViewModel) {
     Scaffold(
-        topAppBar = {
+        topBar = {
             TopAppBar(title = { Text("Quiz") },
                 actions =
                 {
@@ -33,23 +32,25 @@ fun QuizScreen(viewModel: MainViewModel) {
             )
         },
         bodyContent = {
-            Stack(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+            Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
                     Text(
                         viewModel.question,
                         modifier = Modifier.padding(top = 32.dp),
                         style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     )
                 Column(
-                    Modifier.gravity(Alignment.BottomCenter),
-                    horizontalGravity = Alignment.CenterHorizontally
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Box(Modifier.fillMaxWidth(), gravity = ContentGravity.Center) {
-                        val opacity = animate(if (viewModel.showAnswer) 1f else 0f, endListener = {
-                            if (viewModel.showAnswer) {
-                                viewModel.increaseIndex()
-                                viewModel.showAnswer = false
-                            }
-                        })
+                    Box(Modifier.fillMaxWidth()) {
+                        val opacity = animateFloatAsState(
+                            if (viewModel.showAnswer) 1f else 0f,
+                            finishedListener = {
+                                if (viewModel.showAnswer) {
+                                    viewModel.increaseIndex()
+                                    viewModel.showAnswer = false
+                                }
+                            }).value
                         Text(viewModel.answer, modifier = Modifier.drawOpacity(opacity))
                     }
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {

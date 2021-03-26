@@ -1,9 +1,8 @@
 package de.hshl.isd.quizcompose
 
-import androidx.compose.Model
+import androidx.lifecycle.ViewModel
 
-@Model
-class MainViewModel {
+class MainViewModel : ViewModel() {
 
     val questions = listOf(
         Pair("Das Videospiel Donkey Kong sollte ursprünglich Popeye als Hauptfigur haben.", true),
