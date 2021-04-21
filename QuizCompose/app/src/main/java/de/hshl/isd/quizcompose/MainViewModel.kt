@@ -1,6 +1,12 @@
 package de.hshl.isd.quizcompose
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
@@ -20,19 +26,21 @@ class MainViewModel : ViewModel() {
 
     var index = 0
 
-    var showAnswer = false
+    var showAnswer by mutableStateOf(false)
 
-    val question: String
-        get() = questions[index].first
+    var question by mutableStateOf(questions[index].first)
 
-    var answer: String = ""
+    var answer by mutableStateOf("")
 
-    fun increaseIndex() {
+    private fun nextQuestion() {
+        showAnswer = false
         index = (index + 1) % questions.count()
+        question = questions[index].first
         answer = ""
     }
 
     fun evaluateAnswer(givenAnswer: Boolean) {
+        showAnswer = true
         if (givenAnswer == questions[index].second) {
             answer = "Richtig!"
             correctAnswers++
@@ -40,6 +48,15 @@ class MainViewModel : ViewModel() {
             answer = "Falsch!"
             wrongAnswers++
         }
+        GlobalScope.launch {
+            delay(1000)
+            nextQuestion()
+        }
+    }
+
+    fun skip() {
+        skippedQuestions++
+        nextQuestion()
     }
 
 }

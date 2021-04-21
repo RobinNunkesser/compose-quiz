@@ -1,32 +1,17 @@
 package de.hshl.isd.quizcompose
 
-import androidx.compose.Composable
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Text
-import androidx.ui.layout.*
-import androidx.ui.material.IconButton
-import androidx.ui.material.Scaffold
-import androidx.ui.material.TopAppBar
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.ArrowBack
-import androidx.ui.unit.dp
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun StatisticsScreen(viewModel: MainViewModel) {
     Scaffold(
-        topAppBar = {
-            TopAppBar(title = { Text("Statistics") },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        Status.currentScreen = Screen.Quiz(viewModel)
-                    }) {
-                        Icon(Icons.Filled.ArrowBack)
-                    }
-                }
-            )
-        },
-        bodyContent = {
+        topBar = {
+            TopAppBar(title = { Text("Statistics") })
+        }) {
             Column(Modifier.fillMaxSize().padding(8.dp), verticalArrangement = Arrangement.Center) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text("Bearbeitete Fragen")
@@ -46,5 +31,4 @@ fun StatisticsScreen(viewModel: MainViewModel) {
                 }
             }
         }
-    )
 }
