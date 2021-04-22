@@ -26,7 +26,7 @@ fun QuizScreen(navController: NavController, viewModel: MainViewModel) {
                 actions =
                 {
                     Button(onClick = {
-                        navController.navigate(MainDestinations.STATISTICS_ROUTE)
+                        navController.navigate(Screen.Statistics.route)
                     }) {
                         Text("Statistics")
                     }

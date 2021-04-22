@@ -2,28 +2,30 @@ package de.hshl.isd.quizcompose
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 
-object MainDestinations {
-    const val QUIZ_ROUTE = "quiz"
-    const val STATISTICS_ROUTE = "statistics"
+sealed class Screen(val route: String) {
+    object Quiz : Screen("quiz")
+    object Statistics : Screen("statistics")
 }
 
 @ExperimentalAnimationApi
 @Composable
-fun NavGraph(startDestination: String = MainDestinations.QUIZ_ROUTE, viewModel: MainViewModel) {
-    val navController = rememberNavController()
-
+fun NavigationHost(
+    navController: NavHostController,
+    viewModel: MainViewModel,
+    startDestination: String = Screen.Quiz.route
+) {
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(MainDestinations.QUIZ_ROUTE) {
+        composable(Screen.Quiz.route) {
             QuizScreen(navController = navController, viewModel = viewModel)
         }
-        composable(MainDestinations.STATISTICS_ROUTE) {
+        composable(Screen.Statistics.route) {
             StatisticsScreen(viewModel = viewModel)
         }
     }
