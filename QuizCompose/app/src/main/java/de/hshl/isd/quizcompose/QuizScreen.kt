@@ -10,6 +10,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,20 +51,20 @@ fun QuizScreen(navController: NavController, viewModel: MainViewModel) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AnimatedVisibility(visible = viewModel.showAnswer) {
-                        Text(viewModel.answer)
+                        Text(stringResource(id = viewModel.answer))
                     }
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                         Button(enabled = !viewModel.showAnswer,
                             onClick = {
                                 viewModel.evaluateAnswer(false)
                             }) {
-                            Text("Falsch")
+                            Text(stringResource(id = R.string.button_wrong))
                         }
                         Button(enabled = !viewModel.showAnswer,
                             onClick = {
                                 viewModel.evaluateAnswer(true)
                             }) {
-                            Text("Richtig")
+                            Text(stringResource(id = R.string.button_correct))
                         }
                     }
                     Button(modifier = Modifier.padding(top = 8.dp),
@@ -71,7 +72,7 @@ fun QuizScreen(navController: NavController, viewModel: MainViewModel) {
                         onClick = {
                             viewModel.skip()
                         }) {
-                        Text("Überspringen")
+                        Text(stringResource(id = R.string.button_skip))
                     }
                 }
             }

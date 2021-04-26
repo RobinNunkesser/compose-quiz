@@ -1,7 +1,7 @@
 package de.hshl.isd.quizcompose
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
@@ -30,22 +30,21 @@ class MainViewModel : ViewModel() {
 
     var question by mutableStateOf(questions[index].first)
 
-    var answer by mutableStateOf("")
+    var answer by mutableStateOf(R.string.label_correct)
 
     private fun nextQuestion() {
         showAnswer = false
         index = (index + 1) % questions.count()
         question = questions[index].first
-        answer = ""
     }
 
     fun evaluateAnswer(givenAnswer: Boolean) {
         showAnswer = true
         if (givenAnswer == questions[index].second) {
-            answer = "Richtig!"
+            answer = R.string.label_correct
             correctAnswers++
         } else {
-            answer = "Falsch!"
+            answer = R.string.label_wrong
             wrongAnswers++
         }
         GlobalScope.launch {
