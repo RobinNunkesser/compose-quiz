@@ -12,10 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
 
 @ExperimentalAnimationApi
 @Composable
@@ -43,6 +45,7 @@ fun QuizScreen(navController: NavController, viewModel: MainViewModel) {
                         style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     )
                 Column(
+                    modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Bottom,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -72,5 +75,12 @@ fun QuizScreen(navController: NavController, viewModel: MainViewModel) {
                     }
                 }
             }
-        }
+    }
+}
+
+@ExperimentalAnimationApi
+@Preview
+@Composable
+fun ComposablePreview() {
+    QuizScreen(rememberNavController(), MainViewModel())
 }
